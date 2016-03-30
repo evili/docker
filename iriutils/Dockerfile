@@ -1,4 +1,7 @@
-FROM ubuntu:14.04
+#
+# Pull images from ready-made jenkins slave
+#
+FROM evarga/jenkins-slave
 
 WORKDIR /tmp
 
@@ -9,7 +12,7 @@ RUN echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc
     apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 0xB01FA116
 
 #
-# Install ROS, Subversion, gi and cmake
+# Install ROS, Subversion, git and cmake
 #
 RUN apt-get update && \
     apt-get install -y \
