@@ -18,7 +18,7 @@ RUN apt-get update && \
     apt-get install -y \
     wget build-essential \
     subversion git cmake python-virtualenv \
-    doxygen valgrind && \
+    doxygen valgrind lcov && \
     mkdir -pv /src
 #    ros-jade-ros-base \
 
