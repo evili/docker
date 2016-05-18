@@ -17,7 +17,7 @@ RUN echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc
 RUN apt-get update && \
     apt-get install -y \
     wget build-essential \
-    emacs24-nox vim \
+    emacs24-nox vim python-dev \
     subversion git cmake python-virtualenv \
     doxygen valgrind lcov libgtest-dev && \
     mkdir -pv /src
