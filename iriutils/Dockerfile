@@ -18,7 +18,7 @@ RUN apt-get update && \
     apt-get install -y \
     wget build-essential \
     emacs24-nox vim python-dev \
-    subversion git cmake python-virtualenv \
+    subversion git git-flow cmake python-virtualenv \
     doxygen valgrind lcov libgtest-dev && \
     mkdir -pv /src
 #    ros-jade-ros-base \
