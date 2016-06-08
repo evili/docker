@@ -19,7 +19,9 @@ RUN apt-get update && \
     wget build-essential \
     emacs24-nox vim python-dev \
     subversion git git-flow cmake python-virtualenv \
-    doxygen valgrind lcov libgtest-dev && \
+    doxygen doxygen-latex texlive-latex-base \
+    texlive-latex-extra texlive-latex-recommended \
+    valgrind lcov libgtest-dev && \
     mkdir -pv /src
 #    ros-jade-ros-base \
 
