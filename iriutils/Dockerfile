@@ -1,7 +1,7 @@
 #
 # Pull images from ready-made jenkins slave
 #
-FROM evarga/jenkins-slave
+FROM ubuntu:14.04
 
 WORKDIR /tmp
 
@@ -21,7 +21,7 @@ RUN apt-get update && \
     subversion git git-flow cmake python-virtualenv \
     doxygen doxygen-latex texlive-latex-base \
     texlive-latex-extra texlive-latex-recommended \
-    valgrind lcov libgtest-dev && \
+    valgrind lcov && \
     mkdir -pv /src
 #    ros-jade-ros-base \
 
