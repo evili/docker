@@ -16,7 +16,7 @@ RUN echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc
 #
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-    wget zip build-essential \
+    wget zip ca-certificates build-essential \
     vim python-dev python-pip \
     subversion git git-flow cmake python-virtualenv \
     doxygen doxygen-latex texlive-latex-base \
