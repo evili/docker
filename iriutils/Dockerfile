@@ -15,15 +15,15 @@ RUN echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc
 # Install ROS, Subversion, git and cmake
 #
 RUN apt-get update && \
-    apt-get install -y \
-    wget build-essential \
+    apt-get install --no-install-recommends -y \
+    wget zip build-essential \
     emacs24-nox vim python-dev \
     subversion git git-flow cmake python-virtualenv \
     doxygen doxygen-latex texlive-latex-base \
     texlive-latex-extra texlive-latex-recommended \
+    texlive-publishers texlive-science \
     valgrind lcov && \
     mkdir -pv /src
-#    ros-jade-ros-base \
 
 #
 # Create working directory
