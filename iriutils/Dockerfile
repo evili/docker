@@ -18,7 +18,7 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y \
     wget zip ca-certificates build-essential \
     vim python-dev python-pip \
-    subversion git git-flow cmake python-virtualenv \
+    subversion git git-flow cmake virtualenv \
     doxygen doxygen-latex texlive-latex-base \
     texlive-latex-extra texlive-latex-recommended \
     texlive-publishers texlive-science \
