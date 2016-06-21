@@ -1,34 +1,36 @@
 #
-# Pull images from ready-made jenkins slave
+# Pull images from Ubuntu
 #
 FROM ubuntu:14.04
 
-WORKDIR /tmp
+#
+# Create working directory
+#
+RUN mkdir -pv /src
+WORKDIR /src
 
 #
 # Add ROS Distribution
 #
 RUN echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list && \
     apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 0xB01FA116
+RUN apt-get update
 
 #
 # Install ROS, Subversion, git and cmake
 #
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
+RUN apt-get install --no-install-recommends -y \
     wget zip ca-certificates build-essential \
     vim python-dev python-pip \
     subversion git git-flow cmake virtualenv \
+    valgrind lcov
+#
+# Install TeXLive, Doxygen and friends
+#
+RUN apt-get install --no-install-recommends -y \
     doxygen doxygen-latex texlive-latex-base \
     texlive-latex-extra texlive-latex-recommended \
-    texlive-publishers texlive-science \
-    valgrind lcov && \
-    mkdir -pv /src
-
-#
-# Create working directory
-#
-WORKDIR /src
+    texlive-publishers texlive-science pgf
 
 #
 # Checkout IRIUtils
