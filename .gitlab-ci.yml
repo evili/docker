@@ -1,6 +1,7 @@
 image: docker.io/docker:1.10
+
 services:
-- docker:dind
+- docker.io/docker:1.10-dind
 
 before_script:
 - docker info
