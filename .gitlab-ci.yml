@@ -1,7 +1,7 @@
-image: docker:latest
+image: docker.io/docker:latest
 
 services:
-- docker:dind
+- docker.io/docker:dind
 
 before_script:
 - docker info
