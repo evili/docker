@@ -15,20 +15,13 @@ By contributing you agree to respect the [Code of Conduct](http://todogroup.org/
 
     - check against supported versions of this project (i.e. the latest)
 
-- please comment with a "+1" to help vote for issues that are important to you
-
-- please DO NOT comment with a "+1", use the Subscribe button instead
-
 - please keep discussions on-topic, and respect the opinions of others
 
-- please report urgent issues, or issues with confidential details, via our commercial support channels
 
 
 ### Bug Reports
 
 - please report bugs in the issue tracker
-
-- ideally provide a [reduced test case](https://css-tricks.com/reduced-test-cases/) and a live example on http://codepen.io/ , http://jsbin.com/ , https://jsfiddle.net/ , or similar
 
 - please provide detailed steps to reproduce
 
@@ -67,4 +60,4 @@ By contributing you agree to respect the [Code of Conduct](http://todogroup.org/
 
 ## Tests
 
-- Use the specific runner of this project to build your image (see the [.gitlab-ci.yml](.gitlab-ci.yml) of the project.
+- Use the specific runner of this project to build your image (see the [.gitlab-ci.yml](.gitlab-ci.yml)) of the project.
