@@ -1,7 +1,7 @@
 #
 # Pull images from Ubuntu
 #
-FROM ubuntu:14.04
+FROM ubuntu:trusty
 
 #
 # Create working directory
