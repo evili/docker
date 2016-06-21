@@ -1,4 +1,4 @@
-image: docker.io/docker:latest
+image: docker.io/docker:1.10
 
 services:
 - docker.io/docker:dind
