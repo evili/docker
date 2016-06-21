@@ -1,0 +1,19 @@
+image: docker:latest
+
+services:
+- docker:dind
+
+before_script:
+- docker info
+
+labrobotica:
+  stage: build
+  script:
+  - cd labrobotica
+  - docker build -t labrobotica .
+
+gitlabci:
+  stage: build
+  script:
+  - cd gitlabci
+  - docker build -t gitlabci .
