@@ -14,8 +14,8 @@ RUN apt-get update && \
     g++ \
     subversion git git-flow cmake \
     python-pip python3-pip \
+    libmysqld-dev python-dev libldap-dev \
+    libsasl2-dev libjpeg-dev \
     virtualenv python3-virtualenv \
     clang-tidy splint cppcheck \
     valgrind lcov
-
-
