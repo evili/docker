@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:xenial
 
 #
 # Create and set working directory
@@ -13,9 +13,13 @@ RUN apt-get update && \
     wget build-essential \
     g++ \
     subversion git git-flow cmake \
-    python-pip python3-pip \
-    libmysqld-dev python-dev libldap-dev \
-    libsasl2-dev libjpeg-dev \
-    virtualenv python3-virtualenv \
     clang-tidy splint cppcheck \
     valgrind lcov
+#
+# Install some additional devels
+#
+RUN apt-get install --no-install-recommends -y \
+    python-pip python3-pip python-virtualenv python3-virtualenv \
+    libmysqld-dev python-dev libldap-dev \
+    libsasl2-dev libjpeg-dev
+
