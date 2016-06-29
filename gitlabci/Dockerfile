@@ -19,7 +19,8 @@ RUN apt-get update && \
 # Install some additional devels
 #
 RUN apt-get install --no-install-recommends -y \
-    python-pip python3-pip python-virtualenv python3-virtualenv \
+    python-pip python3-pip \
+    virtualenv python-virtualenv python3-virtualenv \
     libmysqld-dev python-dev libldap-dev \
     libsasl2-dev libjpeg-dev
 
