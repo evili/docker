@@ -30,7 +30,7 @@ RUN apt-get install --no-install-recommends -y \
 RUN apt-get install --no-install-recommends -y \
     doxygen doxygen-latex texlive-latex-base \
     texlive-latex-extra texlive-latex-recommended \
-    texlive-publishers texlive-science pgf
+    texlive-publishers texlive-science pgf unzip
 
 #
 # Checkout IRIUtils
