@@ -1,8 +1,8 @@
 FROM centos:7
 
 ENV CENTOS_VERSION=7 \
-    PG_VERSION=9.4 \
-    PG_NODOT=94 \
+    PG_VERSION=9.5 \
+    PG_NODOT=95 \
     POSTGIS_VERSION=2
 ENV PGDATA /var/lib/pgsql/${PG_VERSION}/data/
 
