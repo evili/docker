@@ -30,6 +30,7 @@ RUN cd /tmp && \
         python-libs \
         python-pip \
         python-urllib3 \
+        python34-pip \
         uwsgi-plugin-python
 
 RUN mkdir -pv ${BASE_DIR}
