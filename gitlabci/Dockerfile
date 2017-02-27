@@ -22,5 +22,5 @@ RUN apt-get install --no-install-recommends -y \
     python-pip python3-pip \
     virtualenv python-virtualenv python3-virtualenv \
     mariadb-client libmysqld-dev python-dev libldap-dev \
-    libsasl2-dev libjpeg-dev
+    libsasl2-dev libjpeg-dev tightvncserver
 
