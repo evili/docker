@@ -8,7 +8,6 @@ ENV OS_VERSION=25 \
 
 RUN cd /tmp && \
     dnf install -y deltarpm && \
-    dnf install -y epel-release && \
     dnf install -y curl && \
     curl -o pgdg.rpm http://yum.postgresql.org/${PG_VERSION}/fedora/fedora-${OS_VERSION}-x86_64/pgdg-fedora${PG_NODOT}-${PG_VERSION}-${PG_MINOR}.noarch.rpm && \
     dnf install -y ./pgdg.rpm && \
