@@ -22,7 +22,7 @@ RUN apt-get update
 RUN apt-get install --no-install-recommends -y \
     wget zip ca-certificates build-essential \
     vim python-dev python-pip \
-    subversion git git-flow cmake virtualenv \
+    subversion git git-flow cmake python-virtualenv \
     valgrind lcov
 #
 # Install TeXLive, Doxygen and friends
