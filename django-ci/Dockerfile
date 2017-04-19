@@ -12,6 +12,7 @@ RUN cd /tmp && \
     dnf upgrade -y && \
     dnf install -y \
         python3-virtualenv tigervnc-server firefox wget \
+        gcc openldap-devel \
         postgresql${PG_NODOT}-devel python2-psycopg2 python3-psycopg2
 
 RUN cd /tmp && \
