@@ -22,4 +22,6 @@ RUN cd /tmp && \
     chmod +x geckodriver && \
     mv geckodriver /usr/local/bin/
 
+RUN dnf install -y xorg-x11-server-Xvfb
+
 ENV PATH /usr/pgsql-${PG_VERSION}/bin:${PATH}
