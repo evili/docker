@@ -13,7 +13,7 @@ RUN cd /tmp && \
     dnf install -y \
         python3-virtualenv python2-virtualenv \
         tigervnc-server firefox wget \
-        gcc openldap-devel redhat-rpm-config \
+        gcc openldap-devel openldap-clients redhat-rpm-config \
         postgresql${PG_NODOT}-devel python2-psycopg2 python3-psycopg2
 
 RUN cd /tmp && \
