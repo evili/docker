@@ -1,0 +1,4 @@
+objectclass ( 1.3.6.1.4.1.25785.2.4.1025 NAME 'uidNext'
+	SUP top
+	STRUCTURAL
+	MUST ( cn $ uidNumber ) )
