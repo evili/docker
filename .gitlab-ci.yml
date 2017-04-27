@@ -6,14 +6,7 @@ services:
 before_script:
 - docker info
 
-labrobotica:
+build_images:
   stage: build
   script:
-  - cd labrobotica
-  - docker build -t labrobotica .
-
-gitlabci:
-  stage: build
-  script:
-  - cd gitlabci
-  - docker build -t gitlabci .
+    - for im in labrobotica gitlabci django-ci openldap;do pushd ${im}; docker build -t ${im} .; popd; done
