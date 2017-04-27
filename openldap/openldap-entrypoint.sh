@@ -33,7 +33,8 @@ EOF
 #
 # Init LDAP Database
 #
-/usr/sbin/slaptest -v -f ./slapd.conf -F /etc/openldap/slapd.d
+/usr/sbin/slaptest -v -f ./slapd.conf -F /etc/openldap/slapd.d || \
+    /usr/sbin/slaptest -u -f ./slapd.conf -F /etc/openldap/slapd.d
 
 #
 # Add initial entriesw
