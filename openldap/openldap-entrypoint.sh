@@ -2,6 +2,8 @@
 #
 # Variable Defaults
 #
+set -x
+set -e
 LDAP_ORGANIZATION=${LDAP_ORGANIZATION:-"Example Inc."}
 LDAP_DOMAIN=${LDAP_DOMAIN:-"example.com"}
 LDAP_BASE=${LDAP_BASE:-$(echo ${LDAP_DOMAIN} | awk -F. -v ORS="," '{printf "dc="$1;for(i=2;i<=NF;i++){printf ",dc="$i;}}')}
@@ -14,7 +16,6 @@ LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD:-"admin"}
 # redirect to log file
 exec > /var/lib/ldap/entrypoint.log 2>&1
 pushd /var/tmp/slapd-conf
-set -x
 #
 # LDAP Main Database
 #
@@ -72,4 +73,4 @@ done
 #
 # Start LDAP Server
 #
-/usr/sbin/slapd -4 -d config -u ldap -g ldap -h ldap:///
+exec /usr/sbin/slapd -4 -d config -u ldap -g ldap -h ldap:/// "$@"
