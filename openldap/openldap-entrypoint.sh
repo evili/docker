@@ -21,13 +21,34 @@ pushd /var/tmp/slapd-conf
 #
 /usr/bin/mkdir -pv /var/lib/ldap/${LDAP_DB_DIR}
 /usr/bin/cat<<EOF >> ./slapd.conf
+#
+# Access to cn=config
+#
+access to *
+  by dn.exact=${LDAP_ADMIN_USER} write
+  by * read
+#
+# Monitor database
+#
+database monitor
 
+access to *
+  by dn.exact=${LDAP_ADMIN_USER} write
+  by * read
+
+#
+# Main database
+#
 database        mdb
 suffix          "${LDAP_BASE}"
 rootdn          "${LDAP_ADMIN_USER}"
 rootpw          ${LDAP_ADMIN_PASSWORD}
 directory       /var/lib/ldap/${LDAP_DB_DIR}
 index default   sub
+
+access to *
+  by dn.exact=${LDAP_ADMIN_USER} write
+  by * read
 
 EOF
 #
@@ -40,6 +61,7 @@ EOF
 # Add initial entriesw
 #
 /usr/sbin/slapadd -v -F /etc/openldap/slapd.d -b ${LDAP_BASE} <<EOF
+
 dn: ${LDAP_BASE}
 ${LDAP_TOP_DN}
 objectClass: ${LDAP_TOP_OBJECT_CLASS}
