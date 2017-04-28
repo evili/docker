@@ -12,6 +12,8 @@ LDAP_TOP_DN=$(echo ${LDAP_BASE} | awk -F, '{print $1}' |awk -F'=' '{print $1": "
 LDAP_TOP_OBJECT_CLASS=${LDAP_TOP_OBJECT_CLASS:-"dcObject"}
 LDAP_DOMAIN=${LDAP_DOMAIN:-"example.conf"}
 LDAP_ADMIN_USER=${LDAP_ADMIN_USER:-"cn=admin,${LDAP_BASE}"}
+LDAP_ADMIN_DN=$(echo ${LDAP_ADMIN_USER} | awk -F, '{print $1}' |awk -F'=' '{print $1": "$2}')
+LDAP_ADMIN_OBJECT_CLASS=${LDAP_ADMIN_OBJECT_CLASS:-"organizationalRole"}
 LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD:-"admin"}
 # redirect to log file
 exec > /var/lib/ldap/entrypoint.log 2>&1
