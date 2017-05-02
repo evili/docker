@@ -5,11 +5,13 @@ cn: users
 gidNumber: 1000
 labeledURI: ldap:///ou=people,${LDAP_BASE}?uid?sub?(gidNumber=1000)
 objectClass: posixGroup
+objectClass: labeledURIObject
 
 dn: cn=ticusers,ou=group,${LDAP_BASE}
 cn: ticusers
 labeledURI: ldap:///ou=people,${LDAP_BASE}?uid?sub?(gidNumber=1001)
 gidNumber: 1001
 objectClass: posixGroup
+objectClass: labeledURIObject
 
 EOF
