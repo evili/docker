@@ -17,9 +17,9 @@ LDAP_ORGANIZATION=${LDAP_ORGANIZATION:-"Example Inc."}
 LDAP_DOMAIN=${LDAP_DOMAIN:-"example.com"}
 LDAP_BASE=${LDAP_BASE:-$(echo ${LDAP_DOMAIN} | awk -F. -v ORS="," '{printf "dc="$1;for(i=2;i<=NF;i++){printf ",dc="$i;}}')}
 LDAP_USER_BASE=${LDAP_USER_BASE:-"ou=people,${LDAP_BASE}"}
-LDAP_USER_BASE_DN=$(get_dn_pair {LDAP_USER_BASE})
-LDAP_GROUP_BASE=${LDAP_USER_BASE:-"ou=group,${LDAP_BASE}"}
-LDAP_GROUP_BASE_DN=$(get_dn_pair {LDAP_GROUP_BASE})
+LDAP_USER_BASE_DN=$(get_dn_pair ${LDAP_USER_BASE})
+LDAP_GROUP_BASE=${LDAP_GROUP_BASE:-"ou=group,${LDAP_BASE}"}
+LDAP_GROUP_BASE_DN=$(get_dn_pair ${LDAP_GROUP_BASE})
 LDAP_DB_DIR=${LDAP_DB_DIR:-$(echo ${LDAP_DOMAIN} | awk -F. '{print $1}')}
 LDAP_TOP_DN=$(get_dn_pair ${LDAP_BASE})
 LDAP_TOP_OBJECT_CLASS=${LDAP_TOP_OBJECT_CLASS:-"dcObject"}
@@ -50,8 +50,6 @@ rootdn          "${LDAP_ADMIN_USER}"
 rootpw          ${LDAP_ADMIN_PASSWORD}
 directory       /var/lib/ldap/${LDAP_DB_DIR}
 index default   sub
-
-
 #
 # Auth permissions
 #
@@ -65,6 +63,14 @@ access to attrs=userPassword,sambaLMPassword,sambaNTPassword
 access to dn.subtree="cn=nextuid,${LDAP_USER_BASE}"
        by self write 
        by * read
+
+
+#
+# Generic permissions
+#
+access to dn.subtree="${LDAP_BASE}" 
+ by * read
+
 
 EOF
 #
