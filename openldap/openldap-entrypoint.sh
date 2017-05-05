@@ -2,17 +2,30 @@
 #
 # Variable Defaults
 #
+
+#
+# Returns the LDIF pari from any DN:
+# get_dn_pair   "dn: cn=something,ou=there,dc=any,dc=where"  ==
+#               "cn: something"
+function get_dn_pair()
+{
+    echo $1  | awk -F, '{print $1}' | awk -F'=' '{print $1": "$2}'
+}
 set -x
 set -e
 LDAP_ORGANIZATION=${LDAP_ORGANIZATION:-"Example Inc."}
 LDAP_DOMAIN=${LDAP_DOMAIN:-"example.com"}
 LDAP_BASE=${LDAP_BASE:-$(echo ${LDAP_DOMAIN} | awk -F. -v ORS="," '{printf "dc="$1;for(i=2;i<=NF;i++){printf ",dc="$i;}}')}
+LDAP_USER_BASE=${LDAP_USER_BASE:-"ou=people,${LDAP_BASE}"}
+LDAP_USER_BASE_DN=$(get_dn_pair {LDAP_USER_BASE})
+LDAP_GROUP_BASE=${LDAP_USER_BASE:-"ou=group,${LDAP_BASE}"}
+LDAP_GROUP_BASE_DN=$(get_dn_pair {LDAP_GROUP_BASE})
 LDAP_DB_DIR=${LDAP_DB_DIR:-$(echo ${LDAP_DOMAIN} | awk -F. '{print $1}')}
-LDAP_TOP_DN=$(echo ${LDAP_BASE} | awk -F, '{print $1}' |awk -F'=' '{print $1": "$2}')
+LDAP_TOP_DN=$(get_dn_pair ${LDAP_BASE})
 LDAP_TOP_OBJECT_CLASS=${LDAP_TOP_OBJECT_CLASS:-"dcObject"}
 LDAP_DOMAIN=${LDAP_DOMAIN:-"example.conf"}
 LDAP_ADMIN_USER=${LDAP_ADMIN_USER:-"cn=admin,${LDAP_BASE}"}
-LDAP_ADMIN_DN=$(echo ${LDAP_ADMIN_USER} | awk -F, '{print $1}' |awk -F'=' '{print $1": "$2}')
+LDAP_ADMIN_DN=$(get_dn_pair ${LDAP_ADMIN_USER})
 LDAP_ADMIN_OBJECT_CLASS=${LDAP_ADMIN_OBJECT_CLASS:-"organizationalRole"}
 LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD:-"admin"}
 # redirect to log file
@@ -24,19 +37,9 @@ pushd /var/tmp/slapd-conf
 /usr/bin/mkdir -pv /var/lib/ldap/${LDAP_DB_DIR}
 /usr/bin/cat<<EOF >> ./slapd.conf
 #
-# Access to cn=config
-#
-access to *
-  by dn.exact=${LDAP_ADMIN_USER} write
-  by * read
-#
 # Monitor database
 #
 database monitor
-
-access to *
-  by dn.exact=${LDAP_ADMIN_USER} write
-  by * read
 
 #
 # Main database
@@ -48,9 +51,20 @@ rootpw          ${LDAP_ADMIN_PASSWORD}
 directory       /var/lib/ldap/${LDAP_DB_DIR}
 index default   sub
 
-access to *
-  by dn.exact=${LDAP_ADMIN_USER} write
-  by * read
+
+#
+# Auth permissions
+#
+access to attrs=userPassword,sambaLMPassword,sambaNTPassword 
+ by self write
+ by * auth
+
+#
+# nextUid permissions
+#
+access to dn.subtree="cn=nextuid,${LDAP_USER_BASE}"
+       by self write 
+       by * read
 
 EOF
 #
@@ -70,14 +84,13 @@ objectClass: ${LDAP_TOP_OBJECT_CLASS}
 objectClass: organizationalUnit
 ou: ${LDAP_ORGANIZATION}
 
-dn: ou=people,${LDAP_BASE}
-ou: people
+dn: ${LDAP_USER_BASE}
+${LDAP_USER_BASE_DN}
 objectClass: organizationalUnit
 
-dn: ou=group,${LDAP_BASE}
-ou: group
+dn: ${LDAP_GROUP_BASE}
+${LDAP_GROUP_BASE_DN}
 objectClass: organizationalUnit
-
 
 EOF
 #
