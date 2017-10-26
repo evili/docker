@@ -17,14 +17,11 @@ RUN cd /tmp && \
         python3-virtualenv python2-virtualenv \
         tigervnc-server firefox wget openssh-clients \
         gcc openldap-devel openldap-clients redhat-rpm-config \
-        inkscape poppler-utils tar \
-	openssh-clients git-core tar cmake make gcc-c++ python-rosdep \
-	python-rosdistro python-rosinstall python-rospkg ros-release \
-	boost-devel console-bridge-devel tinyxml-devel \
+        inkscape poppler-utils tar python-empy python-gunicorn \
+	    openssh-clients git-core tar cmake make gcc-c++ python-rosdep \
+	    python-rosdistro python-rosinstall python-rospkg python-wstool \
+        ros-release boost-devel console-bridge-devel tinyxml-devel \
         postgresql${PG_NODOT}-devel python2-psycopg2 python3-psycopg2
-
-RUN cd /tmp && \
-    for rpkg in rosdep rosinstall rosinstall_generator wstool; do pip install ${rpkg};done
 
 RUN rosdep init && \
     rosdep update && \
