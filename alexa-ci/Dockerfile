@@ -5,6 +5,9 @@ ENV OS_VERSION=25 \
     PG_VERSION=9.6 \
     PG_MINOR=3 \
     PG_NODOT=96
+    ROS_DIR='/srv/ros_catkin_ws' \
+    ROS_DISTRO='indigo' \
+    ROS_PKGS='catkin rospy std_msgs'
 
 RUN cd /tmp && \
     curl -o pgdg.rpm -L http://yum.postgresql.org/${PG_VERSION}/fedora/fedora-${OS_VERSION}-x86_64/pgdg-fedora${PG_NODOT}-${PG_VERSION}-${PG_MINOR}.noarch.rpm && \
@@ -21,11 +24,16 @@ RUN cd /tmp && \
         postgresql${PG_NODOT}-devel python2-psycopg2 python3-psycopg2
 
 RUN cd /tmp && \
-    curl -o  /tmp/geckodriver.tgz -L https://github.com/mozilla/geckodriver/releases/download/${GECKO_VERSION}/geckodriver-${GECKO_VERSION}-linux64.tar.gz && \
-    tar -xvf /tmp/geckodriver.tgz geckodriver && \
-    chmod +x geckodriver && \
-    mv geckodriver /usr/local/bin/
+    for rpkg in rosdep rosinstall rosinstall_generator wstool; do pip install ${rpkg};done
 
-RUN dnf install -y xorg-x11-server-Xvfb
+RUN rosdep init && \
+    rosdep update && \
+    mkdir -pv ${ROS_DIR} && \
+    pushd ${ROS_DIR} && \
+    rosinstall_generator ros_comm --rosdistro ${ROS_DISTRO} --deps --wet-only --tar > indigo-ros_comm-wet.rosinstall && \
+    wstool init -j8 src indigo-ros_comm-wet.rosinstall && \
+    rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y && \
+    for ros_pkg in ${ROS_PKGS}; do ./src/catkin/bin/catkin_make_isolated --install --only-pkg-with-deps ${ros_pkg} -DCMAKE_BUILD_TYPE=Release;done && \
+    popd
 
 ENV PATH /usr/pgsql-${PG_VERSION}/bin:${PATH}
