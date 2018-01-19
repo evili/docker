@@ -14,6 +14,7 @@ RUN apt-get update && \
     g++ libboost-all-dev \
     subversion git git-flow cmake \
     clang-tidy splint cppcheck \
+    texlive-latex-base \
     valgrind lcov
 #
 # Install some additional devels
