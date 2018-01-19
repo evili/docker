@@ -11,7 +11,7 @@ WORKDIR /src
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
     wget build-essential \
-    g++ \
+    g++ libboost-all-dev \
     subversion git git-flow cmake \
     clang-tidy splint cppcheck \
     valgrind lcov
