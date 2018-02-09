@@ -22,8 +22,11 @@ RUN cd /tmp && \
         gcc \
         libxml2-devel \
         nginx \
-        postgresql${PG_NODOT} \        
-        postgresql${PG_NODOT}-devel \        
+        postgresql${PG_NODOT} \
+        postgresql${PG_NODOT}-devel \
+        postgis${POSTGIS_VERSION}_${PG_NODOT} \
+        postgis${POSTGIS_VERSION}_${PG_NODOT}-client \
+        postgis${POSTGIS_VERSION}_${PG_NODOT}-utils \
         proj-devel \
         pwgen \
         python \
