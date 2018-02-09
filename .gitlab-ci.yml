@@ -1,14 +1,19 @@
 image: docker:latest
 
 services:
-- docker:dind
+    - docker:dind
+
+variables:
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
 
 before_script:
-- docker info
+    - docker info
+    - printenv
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
 
 build_images:
   tags:
     - docker
   stage: build
   script:
-    - for im in labrobotica gitlabci django-ci openldap;do cd ${im}; docker build -t ${im} .; cd ..; done
+    - for im in labrobotica gitlabci django-ci openldap;do pushd ${im}; docker build -t ${im} .; popd; done
