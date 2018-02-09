@@ -4,7 +4,7 @@ ENV CENTOS_VERSION=7 \
     PG_VERSION=10 \
     PG_NODOT=10 \
     PG_REVISION=2 \
-    POSTGIS_VERSION=2 \
+    POSTGIS_VERSION=24 \
     BASE_DIR=/src
 # https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
 RUN cd /tmp && \
