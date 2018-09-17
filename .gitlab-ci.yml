@@ -16,4 +16,4 @@ build_images:
     - docker_machine
   stage: build
   script:
-    - for im in labrobotica gitlabci django-ci openldap;do pushd ${im}; docker build -t ${im} .; popd; done
+    - for im in gradel-bash labrobotica gitlabci django-ci openldap;do pushd ${im}; docker build -t ${im} .; popd; done
