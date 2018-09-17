@@ -13,7 +13,7 @@ before_script:
 
 build_images:
   tags:
-    - docker
+    - docker_machine
   stage: build
   script:
     - for im in labrobotica gitlabci django-ci openldap;do pushd ${im}; docker build -t ${im} .; popd; done
