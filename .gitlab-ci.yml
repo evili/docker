@@ -17,15 +17,7 @@ build_images:
     - docker_machine
   stage: build
   script:
-    - for im in gradle-bash
-    - do
-    -   echo "Building ${im}"
-    -   cd ${im}
-    -   docker build -t ${IMAGE_TAG}/${im}:latest .
-    -   echo "Registering ${im}"
-    -   docker push ${IMAGE_TAG}/${im}:latest
-    -   cd ..
-    - done
+    - for im in gradle-bash; do echo "Building ${im}"; cd ${im}; docker build -t ${IMAGE_TAG}/${im}:latest .; echo "Registering ${im}"; docker push ${IMAGE_TAG}/${im}:latest; cd ..; done
 # labrobotica gitlabci django-ci openldap
 
 #register_images:
