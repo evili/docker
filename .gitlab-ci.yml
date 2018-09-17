@@ -25,4 +25,4 @@ register_images:
     - docker_machine
   stage: test
   script:
-    - for im in gradle-bash; do echo "Registering ${im}"; cd ${im}; docker push ${IMAGE_TAG}/${im}:latest .; cd ..; done
+    - for im in gradle-bash; do echo "Registering ${im}"; cd ${im}; docker push ${IMAGE_TAG}/${im}:latest; cd ..; done
