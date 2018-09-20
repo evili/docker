@@ -21,7 +21,7 @@ RUN cd /tmp && \
         poppler-utils tar python-rosdep python-empy python-gunicorn \
         python-rosdistro python-rosinstall python-rosinstall_generator \
         python-rospkg python-wstool ros-release boost-devel \
-        console-bridge-devel tinyxml-devel \
+        console-bridge-devel tinyxml-devel iputils\
         postgresql${PG_NODOT}-devel python2-psycopg2 python3-psycopg2
 
 RUN rosdep init && \
