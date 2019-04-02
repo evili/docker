@@ -1,14 +1,28 @@
 image: docker:latest
 
 services:
-- docker:dind
+    - docker:dind
+
+variables:
+  IMAGE_TAG: $CI_REGISTRY_IMAGE
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
 
 before_script:
-- docker info
+    - docker info
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
 
 build_images:
   tags:
-    - docker
+    - docker_machine
   stage: build
   script:
-    - for im in labrobotica gitlabci django-ci openldap;do cd ${im}; docker build -t ${im} .; cd ..; done
+    - for im in gradle-bash; do echo "Building ${im}"; cd ${im}; docker build -t ${IMAGE_TAG}/${im}:latest .; echo "Registering ${im}"; docker push ${IMAGE_TAG}/${im}:latest; cd ..; done
+# labrobotica gitlabci django-ci openldap
+
+#register_images:
+#  tags:
+#    - docker_machine
+#  stage: test
+#  script:
+#    - for im in gradle-bash; do echo "Registering ${im}"; cd ${im}; docker push ${IMAGE_TAG}/${im}:latest; cd ..; done

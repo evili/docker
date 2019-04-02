@@ -1,14 +1,15 @@
 FROM centos:7
 
 ENV CENTOS_VERSION=7 \
-    PG_VERSION=9.6 \
-    PG_NODOT=96 \
-    POSTGIS_VERSION=2 \
+    PG_VERSION=10 \
+    PG_NODOT=10 \
+    PG_REVISION=2 \
+    POSTGIS_VERSION=24 \
     BASE_DIR=/src
-
+# https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
 RUN cd /tmp && \
     yum install -y epel-release && \
-    curl -o pgdg.rpm http://yum.postgresql.org/${PG_VERSION}/redhat/rhel-${CENTOS_VERSION}-x86_64/pgdg-redhat${PG_NODOT}-${PG_VERSION}-1.noarch.rpm && \
+    curl -o pgdg.rpm http://download.postgresql.org/pub/repos/yum/${PG_VERSION}/redhat/rhel-${CENTOS_VERSION}-x86_64/pgdg-centos${PG_NODOT}-${PG_VERSION}-${PG_REVISION}.noarch.rpm && \
     yum localinstall -y pgdg.rpm && \
     yum upgrade -y && \
     yum install -y \
@@ -21,8 +22,11 @@ RUN cd /tmp && \
         gcc \
         libxml2-devel \
         nginx \
-        postgresql${PG_NODOT} \        
-        postgresql${PG_NODOT}-devel \        
+        postgresql${PG_NODOT} \
+        postgresql${PG_NODOT}-devel \
+        postgis${POSTGIS_VERSION}_${PG_NODOT} \
+        postgis${POSTGIS_VERSION}_${PG_NODOT}-client \
+        postgis${POSTGIS_VERSION}_${PG_NODOT}-utils \
         proj-devel \
         pwgen \
         python \

@@ -12,9 +12,9 @@ RUN cd /tmp && \
     dnf upgrade -y && \
     dnf install -y \
         python3-virtualenv python2-virtualenv \
-        tigervnc-server firefox wget \
+        tigervnc-server firefox wget openssh-clients \
         gcc openldap-devel openldap-clients redhat-rpm-config \
-        inkscape poppler-utils \
+        inkscape poppler-utils tar \
         postgresql${PG_NODOT}-devel python2-psycopg2 python3-psycopg2
 
 RUN cd /tmp && \
