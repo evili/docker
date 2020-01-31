@@ -17,14 +17,14 @@
 #   environment variables POSTGRES_HOST, POSTGRES_DB, etc.
 #
 
+#
+# DEBUG is disabled if it is not explicitly enabled via environment
+#
+DEBUG = False 
+
 import os
 
 from django.conf import global_settings as __global_settings
-
-#
-# Default project settings
-#
-from . import *
 
 #
 # Dictionary to hold global and default settings
@@ -52,12 +52,12 @@ for st,val in __settings.items():
 if os.getenv('DJANGO_DATABASES', None) is None:
     _PROJECT_NAME = os.getenv('DJANGO_SETTINGS_MODULE').split('.')[0]
     
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DJANGO_DATABASE_ENGINE','django.db.backends.postgresql'),
-        'HOST': os.getenv('DJANGO_DATABASE_HOST', os.getenv('POSTGRES_HOST', 'postgres')),
-        'NAME': os.getenv('DJANGO_DATABASE_NAME', os.getenv('POSTGRES_DB', _PROJECT_NAME)),
-        'USER': os.getenv('DJANGO_DATABASE_USER', os.getenv('POSTGRES_USER', _PROJECT_NAME)),
-        'PASSWORD' : os.getenv('DJANGO_DATABASE_PASSWORD', os.getenv('POSTGRES_PASSWORD', _PROJECT_NAME)),
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv('DJANGO_DATABASE_ENGINE','django.db.backends.postgresql'),
+            'HOST': os.getenv('DJANGO_DATABASE_HOST', os.getenv('POSTGRES_HOST', 'postgres')),
+            'NAME': os.getenv('DJANGO_DATABASE_NAME', os.getenv('POSTGRES_DB', _PROJECT_NAME)),
+            'USER': os.getenv('DJANGO_DATABASE_USER', os.getenv('POSTGRES_USER', _PROJECT_NAME)),
+            'PASSWORD' : os.getenv('DJANGO_DATABASE_PASSWORD', os.getenv('POSTGRES_PASSWORD', _PROJECT_NAME)),
+        }
     }
-}

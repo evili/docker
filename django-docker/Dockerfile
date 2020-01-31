@@ -1,24 +1,23 @@
-FROM python:3.7-alpine
+FROM python:alpine
 
 #ARG dev_packages="gcc g++ libc-dev libxml2-dev libxslt-dev postgresql-dev openldap-dev \
 #                  jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev"
 
 ARG dev_packages="gcc g++ libc-dev postgresql-dev"
 ARG lib_packages="git postgresql-libs"
-
-RUN mkdir -pv   /app
+ARG django_version=">2.2,<2.3"
+RUN mkdir -pv /app
+RUN mkdir -pv /settings
 
 WORKDIR /app
-
-COPY requirements.txt /app
 
 RUN pip install --upgrade pip
 RUN apk update && \
       apk add bash \
       ${lib_packages} \
       ${dev_packages} && \
-      pip install -r requirements.txt && \
       pip install gunicorn \
+        "django${django_version}" \
         psycopg2-binary mysql-connector whitenoise[brotli] && \
       apk del ${dev_packages} && \
       apk add ${lib_packages} && \
@@ -31,6 +30,7 @@ VOLUME ["/static", "/media", "/app"]
 
 EXPOSE 5000/tcp
 
-COPY entrypoint.sh /app
+COPY environment_settings.py /
+COPY entrypoint.sh /
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
