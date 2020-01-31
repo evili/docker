@@ -68,6 +68,7 @@ export DJANGO_SETTINGS_MODULE=final_settings
 
 if [[ ${DJANGO_LOG_LEVEL} == "debug" ]]
 then
+    printenv
     python3 manage.py diffsettings
 fi
 
