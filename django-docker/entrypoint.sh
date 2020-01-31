@@ -1,27 +1,40 @@
 #!/usr/bin/env bash
-printenv
-set -e
-set -x
-# git clone ${GIT_URL} .
-pip install -r requirements.txt --no-input
+cd $(dirname $0)
+settings_found=$(find . -name settings  -o -name settings.py | \
+		     head |tr / . |\
+		     cut -d . -s -f 3-)
+export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-${settings_found}}
 
-if [ -z "${WSGI_MODULE}" ]
-then
-    export WSGI_MODULE=$(basename $(dirname $(find . -name wsgi.py | head -1))).wsgi
-fi
+DJANGO_WSGI=${DJANGO_WSGI:-$(basename $(find . -maxdepth 2 -type f -name wsgi.py  | head -1|awk -F/ '{print $2"."$3}') .py)}
 
-DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-$(basename ${WSGI_MODULE} .wsgi).settings}
+DJANGO_LOG_LEVEL=${DJANGO_LOG_LEVEL:-info}
 
-# Override static content
+# Populate settings with default, and override them with environment variables
 cat > settings.py <<EOF
+
+#
+# Keep default settings apart
+#
+from ${DJANGO_SETTINGS_MODULE} import * as __default_settings
+#
+# Default project settings
+#
 from ${DJANGO_SETTINGS_MODULE} import *
-STATIC_ROOT='/static'
+
 EOF
+#
+# Module to override settings with environment variables
+#
+cat >> final_settings.py < environment_settings.py
 
-export DJANGO_SETTINGS_MODULE=settings
+export DJANGO_SETTINGS_MODULE=final_settings
 
-python manage.py collectstatic --no-input
+python3 manage.py migrate
 
-python manage.py migrate
-LOG_LEVEL=${LOG_LEVEL:-INFO}
-gunicorn --bind 0.0.0.0:8000  --log-level=${LOG_LEVEL} ${WSGI_MODULE} $*
+python3 manage.py collectstatic --no-input
+
+gunicorn --bind 0.0.0.0:5000 \
+	          --capture-output \
+	          --log-level=${DJANGO_LOG_LEVEL} \
+		  --pid /var/run/gunicorn.pid \
+		  ${DJANGO_WSGI} $*

@@ -1,21 +1,36 @@
-FROM python:3.6-alpine
-ARG django_version=1.11
-ARG dev_packages="gcc g++ postgresql-dev"
-ADD ./entrypoint.sh /
+FROM python:3.7-alpine
 
-VOLUME /static
+#ARG dev_packages="gcc g++ libc-dev libxml2-dev libxslt-dev postgresql-dev openldap-dev \
+#                  jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev"
+
+ARG dev_packages="gcc g++ libc-dev postgresql-dev"
+ARG lib_packages="git postgresql-libs"
+
+RUN mkdir -pv   /app
 
 WORKDIR /app
 
-RUN apk update && \
-        apk add bash git \
-        ${dev_packages} && \
-        DJANGO_VERSION=$(echo ${django_version} | \
-        awk -F. '{bump=$NF+1;for(i=1;i<NF;i++){printf("%s.",$i)};printf("%s",bump)}') && \
-        pip install "Django<=${DJANGO_VERSION}" gunicorn \
-          psycopg2-binary psycopg2 mysql-connector \
-        django-heroku whitenoise[brotli] && \
-        apk del ${dev_packages} && \
-        rm -fr /root/.cache
+COPY requirements.txt /app
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+RUN pip install --upgrade pip
+RUN apk update && \
+      apk add bash \
+      ${lib_packages} \
+      ${dev_packages} && \
+      pip install -r requirements.txt && \
+      pip install gunicorn \
+        psycopg2-binary mysql-connector whitenoise[brotli] && \
+      apk del ${dev_packages} && \
+      apk add ${lib_packages} && \
+      rm -fr /root/.cache
+
+ENV DJANGO_STATIC_ROOT=/static
+ENV DJANGO_MEDIA_ROOT=/media
+
+VOLUME ["/static", "/media", "/app"]
+
+EXPOSE 5000/tcp
+
+COPY entrypoint.sh /app
+
+ENTRYPOINT ["/app/entrypoint.sh"]
