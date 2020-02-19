@@ -50,14 +50,30 @@ for st,val in __settings.items():
                 exec(st+" = "+env_setting)
 
 if os.getenv('DJANGO_DATABASES', None) is None:
-    _PROJECT_NAME = os.getenv('DJANGO_SETTINGS_MODULE').split('.')[0]
-    
+    __PROJECT_NAME = os.getenv('DJANGO__PROJECT_NAME',
+                              __default_settings.__package__.split('.')[0])
     DATABASES = {
         'default': {
             'ENGINE': os.getenv('DJANGO_DATABASE_ENGINE','django.db.backends.postgresql'),
             'HOST': os.getenv('DJANGO_DATABASE_HOST', os.getenv('POSTGRES_HOST', 'postgres')),
-            'NAME': os.getenv('DJANGO_DATABASE_NAME', os.getenv('POSTGRES_DB', _PROJECT_NAME)),
-            'USER': os.getenv('DJANGO_DATABASE_USER', os.getenv('POSTGRES_USER', _PROJECT_NAME)),
-            'PASSWORD' : os.getenv('DJANGO_DATABASE_PASSWORD', os.getenv('POSTGRES_PASSWORD', _PROJECT_NAME)),
+            'NAME': os.getenv('DJANGO_DATABASE_NAME', os.getenv('POSTGRES_DB', __PROJECT_NAME)),
+            'USER': os.getenv('DJANGO_DATABASE_USER', os.getenv('POSTGRES_USER', __PROJECT_NAME)),
+            'PASSWORD' : os.getenv('DJANGO_DATABASE_PASSWORD', os.getenv('POSTGRES_PASSWORD', __PROJECT_NAME)),
         }
     }
+
+
+#
+# Add django-health-check to INSTALLED_APPS
+#
+INSTALLED_APPS.extend([
+    'health_check',
+    'health_check.db',
+    'health_check.cache',
+    'health_check.storage',
+])
+#
+# Substitue ROOT_URLCONF to include health checks
+#
+PROJECT_ROOT_URLCONF = ROOT_URLCONF
+ROOT_URLCONF = 'health_urls'

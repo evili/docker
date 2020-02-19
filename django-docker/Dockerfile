@@ -18,6 +18,7 @@ RUN apk update && \
       ${dev_packages} && \
       pip install gunicorn \
         "django${django_version}" \
+        django-health-check \
         psycopg2-binary mysql-connector whitenoise[brotli] && \
       apk del ${dev_packages} && \
       apk add ${lib_packages} && \
@@ -32,5 +33,6 @@ EXPOSE 5000/tcp
 
 COPY environment_settings.py /
 COPY entrypoint.sh /
+COPY health_urls.py /settings
 
 ENTRYPOINT ["/entrypoint.sh"]

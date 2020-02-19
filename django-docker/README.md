@@ -1,6 +1,6 @@
 # docker-django
 
-## A docker image to execute Django apps
+## A Docker image to execute Django apps
 
 This is a python:alpine image that will run a Django project using
 gunicorn and listening on TCP port 5000. It will try to do its best to
