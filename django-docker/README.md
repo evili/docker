@@ -38,6 +38,7 @@ How it works:
   To 
 
 * `DEBUG` is disabled unless enabled *explicitly* via environment variable (set `DJANGO_DEBUG=True`).
+* Includes django-health-checks mountd at URL `health_check`
 
 
 How to run it:

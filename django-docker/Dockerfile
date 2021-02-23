@@ -1,28 +1,29 @@
-FROM python:alpine
+FROM python:3.7
 
-#ARG dev_packages="gcc g++ libc-dev libxml2-dev libxslt-dev postgresql-dev openldap-dev \
-#                  jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev"
+ARG dev_packages=""
+ARG lib_packages=""
+ARG django_version="~=2.2"
 
-ARG dev_packages="gcc g++ libc-dev postgresql-dev"
-ARG lib_packages="git postgresql-libs"
-ARG django_version=">2.2,<2.3"
 RUN mkdir -pv /app
 RUN mkdir -pv /settings
 
 WORKDIR /app
 
 RUN pip install --upgrade pip
-RUN apk update && \
-      apk add bash \
-      ${lib_packages} \
-      ${dev_packages} && \
-      pip install gunicorn \
-        "django${django_version}" \
-        django-health-check \
-        psycopg2-binary mysql-connector whitenoise[brotli] && \
-      apk del ${dev_packages} && \
-      apk add ${lib_packages} && \
-      rm -fr /root/.cache
+
+RUN if [ "${lib_packages}${dev_packages}" != "" ] ; \
+      then  \
+        apt-get update; \
+        apt-get install -y ${lib_packages} ${dev_packages}; \
+    fi
+
+RUN pip install gunicorn "django${django_version}" django-health-check \
+                dj-database-url  psycopg2-binary mysql-connector \
+                whitenoise[brotli]
+
+RUN if [ "${dev_packages}" != "" ] ; then apt-get remove -y ${dev_packages}; fi
+
+RUN if [  "${lib_packages}" != "" ] ; then apt-get remove -y ${lib_packages}; fi
 
 ENV DJANGO_STATIC_ROOT=/static
 ENV DJANGO_MEDIA_ROOT=/media
@@ -33,6 +34,7 @@ EXPOSE 5000/tcp
 
 COPY environment_settings.py /
 COPY entrypoint.sh /
-COPY health_urls.py /settings
+COPY health_urls.py /
 
 ENTRYPOINT ["/entrypoint.sh"]
+CMD [""]
